@@ -1,12 +1,16 @@
 %% phase retrieval for sparse signals 
-%stores signal models (.mat) and results (.mat/fig/jpg). not committed to git repo.
+%stores signal models (.mat) and results (.mat/fig/jpg). not committed to 
+% git repo.
 if ~exist('results','dir')
     mkdir('results')
 end
 if ~exist('signal_model','dir')
     mkdir('signal_model')
 end
-addpath('utils','measurement_model','ThWF','SPARTA','plot_tools','results','signal_model')
+addpath('Gradient_Methods/utils','Gradient_Methods/measurement_model',...
+    'Gradient_Methods/ThWF','Gradient_Methods/SPARTA',...
+    'Gradient_Methods/plot_tools','Gradient_Methods/results',...
+    'Gradient_Methods/signal_model')
 close all;
 clc;
 clear all;
@@ -107,7 +111,7 @@ for k_iter = 1:kl
 end
 
 %% save results
-cd('results')
+cd('Gradient_Methods/results')
     strr = ['SparsePR_errors_','n',num2str(n),'_trials',num2str(trials_M),'.mat'];
     save(strr,'err_sig','n','kspan','mspan','trials_M','ttimer');
 cd('..')
@@ -116,4 +120,4 @@ cd('..')
 phase_trans(strr)
 
 %% plot running time statistics 
-% plot_runtime(strr)
+plot_runtime(strr)

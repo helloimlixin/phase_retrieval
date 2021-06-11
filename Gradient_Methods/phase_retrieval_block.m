@@ -57,8 +57,8 @@ for kj_iter = 1:kb
             [x2,err_hist2,C2,x2_init] = CoPRAM(y_abs,A,b*K,iter,tol1,tol2,z);   
             ttimer(kj_iter,m_iter,tr,2) = toc;            
             
-            [err_sig(kj_iter,m_iter,tr,1) err_ind1] = approx_err(x1,z);
-            [err_sig(kj_iter,m_iter,tr,2) err_ind2] = approx_err(x2,z);
+            [err_sig(kj_iter,m_iter,tr,1), err_ind1] = approx_err(x1,z);
+            [err_sig(kj_iter,m_iter,tr,2), err_ind2] = approx_err(x2,z);
 
             %global phase compensation
             x1 = x1*(-1)^(err_ind1-1);
@@ -89,4 +89,4 @@ cd('..')
 phase_trans_block(strr)
 
 %% plot running time statistics 
-% plot_runtime_block(strr)
+plot_runtime_block(strr)

@@ -16,7 +16,7 @@
 % 
 %
 % CITE: Richard Baraniuk, Volkan Cevher, Marco Duarte, Chinmay Hegde
-%       "Model-based compressive    sensing", submitted to IEEE IT, 2008.
+%       "Model-based compressive sensing", submitted to IEEE IT, 2008.
 % Created: Aug 2009.
 % email: chinmay@rice.edu
 

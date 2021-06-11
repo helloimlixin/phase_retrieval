@@ -6,21 +6,20 @@ sampling_rate = 0.5;
 dir = "data/MNIST/";
 filename = "mnist2.mat";
 my_struct = load(dir+filename);
-array = getfield(my_struct,'vect');
+array = my_struct.("XTest");
 newsize = [28, 28];
-image = transpose(reshape(array, newsize));
+image = extractdata(reshape(array(:, :, :, 1), newsize));
 
 %% Sparsify / Wavelet Transform 
 img_size = size(image);
-wname = 'bior3.5';
+wname = 'bior3.5'; % biorthogonal
 level = 5;
 [x_transform,S] = wavedec2(image,level,wname);
 sparsity = get_approx_sparsity(x_transform, 0.00001);
 
-
 %% Create Measurements
 
-% % For MNIST directly
+% For MNIST directly
 % [numrows,numcols] = size(image);
 % n = numrows*numcols;
 % m = round(n*sampling_rate);
@@ -40,20 +39,27 @@ mu = 0; sigma = 1;
 shape = [m,n];
 A = normrnd(mu,sigma,shape);
 
-x = image(:); 
+x = image(:);
 y = abs(A*x_transform);
 
 
 %% Phase Retrieval
 tol1 = 0.01; tol2 = 0.01;
 maxiter = 100;
-[x_transform_hat,err_hist,p,x_init] = CoPRAM(y,A,sparsity,maxiter,tol1,tol2,x_transform);
+
+% For MNIST data directly.
+% [x_transform_hat,err_hist,p,x_init] = AltMin(b,A,maxiter,tol1,tol2,x);
+
+% For Sparsified output.
+[x_transform_hat,err_hist,p,x_init] = CoPRAM(y,A,sparsity,maxiter,...
+    tol1,tol2,x_transform);
 
 %% Inverse Sparse Transfrom
 x_transform_hat = transpose(x_transform_hat);
 thr = wthrmngr('dw2ddenoLVL','penalhi',x_transform_hat,S,3);
 sorh = 's';
-[image_hat,cfsDEN,dimCFS] = wdencmp('lvd',x_transform_hat,S,wname,level,thr,sorh);
+[image_hat,cfsDEN,dimCFS] = wdencmp('lvd',x_transform_hat,S,...
+    wname,level,thr,sorh);
 
 
 %% Print and save results
@@ -76,7 +82,7 @@ s = 0;
 
 for i= 1:arr_sz(2)
     if(array(i) > threshold)
-        s = s +1;
+        s = s + 1;
     end
 end
 

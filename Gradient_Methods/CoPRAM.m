@@ -19,7 +19,7 @@ if nargin < 7
 end
 p = zeros(m,1); %phase vector
 error_hist(1,1) = 1; %stores error in measurement model
-error_hist(1,2) = 1; %stores relative error b/w iterations
+% error_hist(1,2) = 1; %stores relative error b/w iterations
 Marg = zeros(1,n); %marginals
 MShat = zeros(s); %truncated correlation matrix
 AShat = zeros(m,s); %truncated sensing matrix
@@ -39,7 +39,7 @@ Shat = sort(S0); %store indices in sorted order
 AShat = A(:,Shat); % m x s %sensing sub-matrix
 
 %% Truncated measurements
-TAF = 'on'; %consider only truncated measurements m' < m ; gives marginally better performance 
+% TAF = 'on'; %consider only truncated measurements m' < m ; gives marginally better performance 
 TAF = 'off'; %consider all measurements = m ; aligns with code presented in paper
 
 switch TAF
@@ -64,7 +64,7 @@ for i = 1:card_Marg
 end
 
 svd_opt = 'svd'; %more accurate, but slower for larger dimensions
-svd_opt = 'power'; %approximate, faster for larger dimensions
+% svd_opt = 'power'; %approximate, faster for larger dimensions
 
 switch svd_opt
     case 'svd'
@@ -89,9 +89,9 @@ for t=1:max_iter
     err_hist(t+1,1) = norm(y_abs-abs(A*x))/norm(y_abs);
     err_hist(t+1,2) = norm(x-z)/norm(z);
     fprintf('\n%d\t\t%2.8f\t\t%2.4f\n',t,err_hist(t+1,1),err_hist(t+1,2))
-%     if (err_hist(t+1,1) < tol1) | (abs(err_hist(t,2)-err_hist(t+1,2))<tol2)
-%         break;
-%     end
+    if (err_hist(t+1,1) < tol1) || (abs(err_hist(t,2)-err_hist(t+1,2))<tol2)
+        break;
+    end
 
 end
 
